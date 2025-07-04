@@ -282,9 +282,15 @@ def execute_custom_query():
         page = data.get('page', 1)
         per_page = min(data.get('per_page', 50), 100)  # Máximo 100 registros por página
         
-        # Validar que sea una consulta SELECT
-        if not query.strip().upper().startswith('SELECT'):
+        # Validar que sea una consulta SELECT y evitar SQL injection
+        query_upper = query.strip().upper()
+        if not query_upper.startswith('SELECT'):
             return jsonify({'error': 'Solo se permiten consultas SELECT'}), 400
+            
+        # Bloquear comandos peligrosos
+        dangerous_keywords = ['DELETE', 'DROP', 'TRUNCATE', 'INSERT', 'UPDATE', 'CREATE', 'ALTER', '--']
+        if any(keyword in query_upper for keyword in dangerous_keywords):
+            return jsonify({'error': 'Comando SQL no permitido'}), 400
         
         # Ejecutar consulta
         result = execute_query(database_name, query, page=page, per_page=per_page)
@@ -294,7 +300,7 @@ def execute_custom_query():
             'database': database_name,
             'result': result,
             'timestamp': datetime.now().isoformat()
-        })
+        }), 200
         
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
