@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: flask-backend
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: RAILWAY_HOST
+        sync: false
+      - key: RAILWAY_PORT
+        sync: false
+      - key: RAILWAY_DATABASE
+        sync: false
+      - key: RAILWAY_USER
+        sync: false
+      - key: RAILWAY_PASSWORD
+        sync: false
+      - key: COLEGIO2_HOST
+        sync: false
+      - key: COLEGIO2_PORT
+        sync: false
+      - key: COLEGIO2_DATABASE
+        sync: false
+      - key: COLEGIO2_USER
+        sync: false
+      - key: COLEGIO2_PASSWORD
+        sync: false
+      - key: COLEGIO3_HOST
+        sync: false
+      - key: COLEGIO3_PORT
+        sync: false
+      - key: COLEGIO3_DATABASE
+        sync: false
+      - key: COLEGIO3_USER
+        sync: false
+      - key: COLEGIO3_PASSWORD
+        sync: false
+      - key: COLEGIO4_HOST
+        sync: false
+      - key: COLEGIO4_PORT
+        sync: false
+      - key: COLEGIO4_DATABASE
+        sync: false
+      - key: COLEGIO4_USER
+        sync: false
+      - key: COLEGIO4_PASSWORD
+        sync: false
