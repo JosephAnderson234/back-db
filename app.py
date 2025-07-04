@@ -71,7 +71,8 @@ PREDEFINED_QUERIES = {
             COUNT(DISTINCT n.tipo_evaluacion || '-' || n.codigo_asignatura) >= 5
         ORDER BY
             promedio_general DESC
-        LIMIT 10;
+        LIMIT 10
+        
     """,
     
     'latest_grades': """
@@ -87,7 +88,7 @@ PREDEFINED_QUERIES = {
         JOIN {schema}.datosalumno da ON da.dni_alumno = n.dni_alumno
         JOIN {schema}.evaluacion e ON e.tipo = n.tipo_evaluacion AND e.codigo_asignatura = n.codigo_asignatura
         JOIN {schema}.asignatura a ON a.codigo = n.codigo_asignatura
-        ORDER BY n.dni_alumno, n.codigo_asignatura, e.fecha_inicio DESC;
+        ORDER BY n.dni_alumno, n.codigo_asignatura, e.fecha_inicio DESC
     """,
     
     'classroom_performance': """
@@ -122,7 +123,7 @@ PREDEFINED_QUERIES = {
         HAVING AVG(n.valor) > 13 
         ORDER BY 
             m.grado DESC, 
-            promedio_notas DESC;
+            promedio_notas DESC
     """,
     
     'student_complete_info': """
@@ -184,7 +185,7 @@ PREDEFINED_QUERIES = {
         ORDER BY
             m.grado,
             m.seccion,
-            promedio_asignatura DESC;
+            promedio_asignatura DESC
     """
 }
 
@@ -218,7 +219,7 @@ def execute_query(database_name, query, params=None, page=1, per_page=50):
         offset = (page - 1) * per_page
         
         # Agregar paginación a la consulta
-        paginated_query = f"{query} LIMIT {per_page} OFFSET {offset}"
+        paginated_query = f"SELECT * FROM ({query}) AS subquery LIMIT {per_page} OFFSET {offset}"
         
         # Ejecutar consulta
         cursor.execute(paginated_query, params)
