@@ -265,7 +265,7 @@ def list_databases():
             {'name': 'colegio3', 'description': 'Colegio3 - 100K datos (schema: cole3)'},
             {'name': 'colegio4', 'description': 'Colegio4 - 1M datos (schema: cole4)'}
         ]
-    })
+    }), 200
 
 @app.route('/query', methods=['POST'])
 def execute_custom_query():
@@ -402,4 +402,6 @@ def internal_error(error):
     return jsonify({'error': 'Error interno del servidor'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_ENV') == 'development'
+    app.run(debug=debug, host='0.0.0.0', port=port)
